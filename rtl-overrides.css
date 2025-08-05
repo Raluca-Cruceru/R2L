@@ -1,0 +1,258 @@
+/* RTL layout overrides for Rise courses
+ *
+ * This stylesheet forces a right‑to‑left reading direction across the
+ * entire course and repositions navigation components that are
+ * anchored to the left in Rise’s default layout.  It also flips
+ * directional icons so that arrows point the correct way in RTL
+ * contexts.  Import this stylesheet after all of the default Rise
+ * stylesheets (e.g. `rise/59760143.js` and `e21a6c85.css`) to
+ * override their LTR assumptions.  If your HTML already declares
+ * `dir="rtl"` or `lang="ar"`, these rules will activate; otherwise
+ * you can wrap them inside a `[dir="rtl"]` selector when embedding.
+ */
+
+/* Force the overall reading direction to RTL */
+/*
+ * Apply RTL direction and right alignment globally.  We no longer
+ * constrain these styles behind html[dir="rtl"] selectors because
+ * the course already declares dir="rtl" on the <html> element and
+ * the overrides work without the prefix.
+ */
+html {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Define transform direction variables on the root */
+:root {
+    --dir-x: -1;
+    --dir-y: 1;
+}
+
+/*
+ * Icon flipping removed.
+ *
+ * The previous version flipped all chevron/arrow icons horizontally to
+ * compensate for RTL direction.  However, Rise already displays the
+ * appropriate arrow glyphs for previous/next navigation.  Globally
+ * flipping icons causes unintended behaviour (e.g. next/previous
+ * buttons showing the wrong direction).  If you need to flip a
+ * specific icon, target it individually with `transform: scaleX(-1)`.
+ */
+
+/*!* Reposition sidebars, drawers and lesson navigation to the right *!*/
+/*!* Reposition sidebars, drawers and lesson navigation to the right *!*/
+/*.sidebar,*/
+/*.nav-sidebar,*/
+/*.drawer,*/
+/*.nav-drawer,*/
+/*.lesson-nav,*/
+/*.lesson-nav--floating {*/
+/*    left: auto !important;*/
+/*    right: 0 !important;*/
+/*}*/
+
+/*!* Ensure slide‑out panels open from the right: invert their initial*/
+/*   transform so they are off‑screen on the right rather than the left. *!*/
+/*!* Ensure slide‑out panels open from the right: invert their initial*/
+/*   transform so they are off‑screen on the right rather than the left. *!*/
+/*.sidebar,*/
+/*.nav-sidebar,*/
+/*.drawer,*/
+/*.nav-drawer {*/
+/*    transform-origin: right center;*/
+/*}*/
+/*.sidebar:not([open]),*/
+/*.nav-sidebar:not([open]),*/
+/*.drawer:not(.is-open),*/
+/*.nav-drawer:not(.is-open) {*/
+/*    transform: translateX(100%) !important;*/
+/*}*/
+/*.sidebar[open],*/
+/*.nav-sidebar[open],*/
+/*.drawer.is-open,*/
+/*.nav-drawer.is-open {*/
+/*    transform: translateX(0) !important;*/
+/*}*/
+
+/*!* Reverse the flex direction of floating lesson navigation so that*/
+/*   previous/next buttons are in intuitive positions for RTL users. *!*/
+/*.lesson-nav--floating {*/
+/*    flex-direction: row-reverse !important;*/
+/*}*/
+/*.lesson-nav--floating .lesson-nav-link {*/
+/*    inset-inline-end: auto !important;*/
+/*    inset-inline-start: 2vw !important;*/
+/*}*/
+
+/*!* Position the primary navigation trigger (hamburger/menu button)*/
+/*   on the right side of the header *!*/
+/*.app-header__menu-btn {*/
+/*    margin-left: auto !important;*/
+/*    margin-right: 0 !important;*/
+/*    left: auto !important;*/
+/*    right: 0 !important;*/
+/*}*/
+
+/* Align default lists and blockquotes to the right */
+ul,
+ol,
+blockquote {
+    padding-right: 1.5rem;
+    padding-left: 0;
+    text-align: right;
+}
+
+/* Ensure paragraphs and headings adopt RTL alignment */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-align: right;
+}
+
+/* Force inputs and form controls to use RTL flow */
+input,
+textarea,
+select {
+    direction: rtl;
+    text-align: right;
+}
+
+/*-----------------------------------------------------------*/
+/* Additional RTL adjustments for common Rise components      */
+/*-----------------------------------------------------------*/
+
+/* Ensure progress indicators that display counts like "1 of 41" use
+   RTL ordering and correctly position the conjunction.  The
+   `unicode-bidi: bidi-override` forces the numbers and words to
+   render in logical order (e.g. "41 من 1" in Arabic).  These
+   selectors target the default Rise progress components. */
+.progress__indicator,
+.lesson-progress__indicator,
+.lesson-progress__tooltip__inner {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    text-align: center;
+}
+
+/* Right-align and RTL direction for buttons and interactive controls */
+button,
+.button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+select,
+label {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Apply RTL direction to checkbox and radio labels */
+input[type="checkbox"] + label,
+input[type="radio"] + label {
+    direction: rtl;
+    text-align: right;
+    padding-right: 0.5rem;
+    padding-left: 0;
+}
+
+/* Ensure ordered and unordered lists indent from the right */
+ul,
+ol {
+    padding-right: 1.8rem;
+    padding-left: 0;
+    margin-right: 0;
+    margin-left: 0;
+    text-align: right;
+    list-style-position: inside;
+}
+
+/* Style list markers for RTL: move bullets/numbers to the right */
+ul li::marker,
+ol li::marker {
+    direction: rtl;
+}
+
+/* Adjust default margin/padding on form fieldsets and legends */
+fieldset,
+legend {
+    direction: rtl;
+    text-align: right;
+}
+
+/*
+ * Prevent font icons (chevrons/arrows) from being mirrored by RTL
+ * direction.  Setting `direction: ltr` on these elements ensures
+ * they render consistently as left- or right-pointing arrows even
+ * when nested inside RTL containers.
+ */
+.icon-chevron-left,
+.icon-arrow-left,
+.fa-chevron-left,
+.fa-arrow-left,
+.fa-angle-left,
+.i-chevronLeft,
+[class*="icon-chevron-left"],
+[class*="icon-arrow-left"],
+.icon-chevron-right,
+.icon-arrow-right,
+.fa-chevron-right,
+.fa-arrow-right,
+.fa-angle-right,
+.i-chevronRight,
+[class*="icon-chevron-right"],
+[class*="icon-arrow-right"] {
+    direction: ltr;
+    transform: rotate(180deg) !important;
+}
+
+/*
+ * Correct orientation for previous/next navigation icons used in
+ * Rise courses.  Without these adjustments, both arrows may point
+ * in the same direction after applying global RTL styles.  The
+ * previous button should display a left arrow, while the next
+ * button should display a right arrow; rotating the next icon by
+ * 180 degrees achieves this.
+ */
+/*.lesson-nav--previous .lesson-nav__link-icon {*/
+/*    transform: rotate(0deg) !important;*/
+/*}*/
+/*.lesson-nav--next .lesson-nav__link-icon {*/
+/*    transform: rotate(180deg) !important;*/
+/*}*/
+
+/* Flip the rightmost arrow in the lesson progress navigation.  The
+ * progress bar is typically flanked by two buttons inside
+ * `.lesson-progress__action` elements.  The first is the previous
+ * button (already correct), and the second is the next button.
+ * Flipping the SVG/icon inside the last action ensures the next
+ * button points to the right in RTL layouts.  Adjust selectors as
+ * needed if your markup differs. */
+.lesson-progress__action:last-child svg,
+.lesson-progress__action:last-child [class*="icon-"] {
+    transform: scaleX(-1) !important;
+}
+
+/* Reorder the numbers and text inside the progress indicator.  Using
+ * `flex-direction: row-reverse` causes the numbers to appear in
+ * the order "current من total" in Arabic. */
+.lesson-progress__indicator {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.carousel-controls-counter-text {
+    direction: ltr;
+}
+
+/*
+ * Arrow icons are left unchanged.  If you notice a specific icon
+ * pointing in the wrong direction, target that class and apply
+ * `transform: scaleX(-1)` to flip it.  Applying a blanket flip
+ * causes the next/previous navigation arrows to orient incorrectly.
+ */
